@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-registry
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-registry
+          image: azbuilder/open-registry:2.21.4
+          envFrom:
+            - configMapRef:
+                name: terrakube
+            - configMapRef:
+                name: terrakube-registry
+          ports:
+            - containerPort: 8075
+      serviceAccount: terrakube-registry

@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - certificate.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+  - serviceaccount.yaml
+configMapGenerator:
+  - literals:
+      - ApiDataSourceType="POSTGRESQL"
+      - AuthenticationValidationType="DEX"
+      - AzBuilderExecutorUrl="http://terrakube-executor:8090/api/v1/terraform-rs"
+      - DatasourceDatabase="terrakube"
+      - DatasourceHostname="terrakube-database"
+      - DatasourcePort="5432"
+      - DatasourceSchema="public"
+      - DatasourceSslMode="disable"
+      - DexClientId="terrakube"
+      - GroupValidationType="DEX"
+      - ModuleCacheMaxIdle="128"
+      - ModuleCacheMaxTotal="128"
+      - ModuleCacheMinIdle="64"
+      - ModuleCacheSchedule="0 */3 * ? * *"a
+      - ModuleCacheTimeout="600000"
+      - spring_profiles_active="demo"
+      - StorageType="AWS"
+      - TERRAKUBE_ADMIN_GROUP="TERRAKUBE_ADMIN"
+      - TerrakubeHostname="terrakube-api.dorsk.dev"
+      - UserValidationType="DEX"
+    name: terrakube-api
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: terrakube-api
+      app.kubernetes.io/name: terrakube-api

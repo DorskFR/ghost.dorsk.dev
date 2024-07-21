@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: terrakube
+spec:
+  tls:
+    - hosts:
+        - terrakube-dex.dorsk.dev
+      secretName: letsencrypt-terrakube-dex
+  rules:
+    - host: terrakube-dex.dorsk.dev
+      http: &http_rules
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: terrakube-dex
+                port:
+                  number: 5556
+  ingressClassName: nginx

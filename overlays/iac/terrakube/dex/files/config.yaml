@@ -1,0 +1,51 @@
+issuer: https://terrakube-dex.dorsk.dev/dex
+
+storage:
+  type: memory
+
+web:
+  http: 0.0.0.0:5556
+  allowedOrigins: ['*']
+
+oauth2:
+  responseTypes: ["code", "token", "id_token"]
+  skipApprovalScreen: true
+
+connectors:
+- type: ldap
+  name: LLDAP
+  id: ldap
+  config:
+    host: lldap.security.svc.cluster.local:3890
+    insecureNoSSL: true
+    bindDN: uid=terrakube,ou=people,dc=dorsk,dc=dev
+    bindPW: $LLDAP_TERRAKUBE_BINDPW
+
+    usernamePrompt: Username
+
+    userSearch:
+      baseDN: ou=people,dc=dorsk,dc=dev
+      filter: (objectClass=person)
+      username: uid
+
+      idAttr: DN
+      emailAttr: mail
+      nameAttr: cn
+
+    groupSearch:
+      baseDN: ou=groups,dc=dorsk,dc=dev
+      filter: (objectClass=groupOfNames)
+      userMatchers:
+        - groupAttr: member
+          userAttr: DN
+      nameAttr: cn
+
+staticClients:
+  - id: terrakube
+    name: terrakube
+    public: true
+    redirectURIs:
+      - https://terrakube.dorsk.dev
+      - /device/callback
+      - http://localhost:10000/login
+      - http://localhost:10001/login

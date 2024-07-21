@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: terrakube-api
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  tls:
+    - hosts:
+        - terrakube-api.dorsk.dev
+      secretName: letsencrypt-terrakube-api
+  rules:
+    - host: terrakube-api.dorsk.dev
+      http: &http_rules
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: terrakube-api
+                port:
+                  number: 8080
+  ingressClassName: nginx

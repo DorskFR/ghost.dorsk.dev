@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-ui
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-ui
+          image: azbuilder/terrakube-ui:2.21.4
+          envFrom:
+            - configMapRef:
+                name: terrakube
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: terrakube-ui-files
+              mountPath: /app/env-config.js
+              subPath: env-config.js
+              readOnly: true
+      volumes:
+        - name: terrakube-ui-files
+          configMap:
+            name: terrakube-ui-files
+            items:
+              - key: env-config.js
+                path: env-config.js
+      serviceAccount: terrakube-ui

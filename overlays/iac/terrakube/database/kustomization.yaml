@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - pvc.yaml
+  - service.yaml
+  - serviceaccount.yaml
+configMapGenerator:
+  - literals:
+      - POSTGRES_DB=terrakube
+    name: terrakube-database
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: terrakube-database
+      app.kubernetes.io/name: terrakube-database

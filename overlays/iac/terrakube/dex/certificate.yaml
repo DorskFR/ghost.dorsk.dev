@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsencrypt-terrakube-dex
+spec:
+  secretName: letsencrypt-terrakube-dex
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - terrakube-dex.dorsk.dev

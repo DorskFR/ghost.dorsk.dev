@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-executor
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-executor
+          image: azbuilder/executor:2.21.4
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: terrakube
+            - configMapRef:
+                name: terrakube-executor
+      serviceAccount: terrakube-executor

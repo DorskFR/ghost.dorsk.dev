@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-database
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-database
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: terrakube
+            - configMapRef:
+                name: terrakube-database
+          volumeMounts:
+            - name: terrakube-database-volume
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: terrakube-database-volume
+          persistentVolumeClaim:
+            claimName: terrakube-database-volume
+      serviceAccount: terrakube-database

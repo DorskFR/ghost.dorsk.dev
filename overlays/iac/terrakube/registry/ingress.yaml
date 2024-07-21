@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: terrakube-registry
+spec:
+  tls:
+    - hosts:
+        - terrakube-registry.dorsk.dev
+      secretName: letsencrypt-terrakube-registry
+  rules:
+    - host: terrakube-registry.dorsk.dev
+      http: &http_rules
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: terrakube-registry
+                port:
+                  number: 8075
+  ingressClassName: nginx

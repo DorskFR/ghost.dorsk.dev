@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-dex
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-dex
+          image: ghcr.io/dexidp/dex:v2.38.0
+          args:
+            - dex
+            - serve
+            - --web-http-addr
+            - 0.0.0.0:5556
+            - --telemetry-addr
+            - 0.0.0.0:5558
+            - /etc/dex/config.yaml
+          ports:
+            - name: http
+              containerPort: 5556
+            - name: telemetry
+              containerPort: 5558
+          volumeMounts:
+            - name: terrakube-dex-files
+              mountPath: /etc/dex
+              readOnly: true
+      volumes:
+        - name: terrakube-dex-files
+          configMap:
+            name: terrakube-dex-files
+      serviceAccount: terrakube-dex

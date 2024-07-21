@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terrakube-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: terrakube-api
+          image: azbuilder/api-server:2.21.4
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: terrakube
+            - configMapRef:
+                name: terrakube-api
+      serviceAccount: terrakube-api

@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+spec:
+  schedule: "@hourly"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.security.banzaicloud.io/vault-role: "security-renovate"
+            vault.security.banzaicloud.io/vault-env-from-path: "cyberia/data/security/renovate"
+        spec:
+          containers:
+            - image: renovate/renovate:37-slim
+              name: renovate
+              envFrom:
+                - configMapRef:
+                    name: renovate
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 1Gi
+                  ephemeral-storage: 1Gi
+                limits:
+                  cpu: 1
+                  memory: 4Gi
+                  ephemeral-storage: 4Gi
+              volumeMounts:
+                - name: renovate-files
+                  mountPath: /opt/renovate/
+                - name: work-volume
+                  mountPath: /tmp/renovate/
+          volumes:
+            - name: renovate-files
+              configMap:
+                name: renovate-files
+            - name: work-volume
+              emptyDir: {}
+          restartPolicy: Never
+          serviceAccount: renovate

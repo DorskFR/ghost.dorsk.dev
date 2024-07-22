@@ -1,0 +1,99 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "autodiscover": false,
+  "detectHostRulesFromEnv": true,
+  "extends": [
+    "config:recommended"
+  ],
+  "gitAuthor": "DorskFR <dorsk.dev@gmail.com>",
+  "onboarding": false,
+  "osvVulnerabilityAlerts": true,
+  "platform": "github",
+  "repositories": [
+    {
+      "enabledManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "poetry",
+        "dockerfile"
+      ],
+      "packageRules": [
+        {
+          "enabled": true,
+          "matchDatasources": [
+            "pypi"
+          ]
+        }
+      ],
+      "repository": "DorskFR/tidalidarr"
+    },
+    {
+      "enabledManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "poetry",
+        "dockerfile"
+      ],
+      "packageRules": [
+        {
+          "enabled": true,
+          "matchDatasources": [
+            "pypi"
+          ]
+        }
+      ],
+      "repository": "DorskFR/aiterio"
+    },
+    {
+      "enabledManagers": [
+        "gomod",
+        "dockerfile"
+      ],
+      "packageRules": [
+        {
+          "enabled": true,
+          "matchDatasources": [
+            "go"
+          ]
+        }
+      ],
+      "repository": "DorskFR/arbichan"
+    },
+    {
+      "enabledManagers": [
+        "npm",
+        "dockerfile"
+      ],
+      "packageRules": [
+        {
+          "enabled": true,
+          "matchDatasources": [
+            "npm"
+          ]
+        }
+      ],
+      "repository": "DorskFR/jsonresume-theme-rirekisho"
+    },
+    {
+      "enabledManagers": [
+        "kubernetes",
+        "kustomize"
+      ],
+      "kubernetes": {
+        "fileMatch": [
+          "overlays/.+\\.yaml$"
+        ]
+      },
+      "kustomize": {
+        "fileMatch": [
+          "overlays/.+kustomization\\.ya?ml$"
+        ]
+      },
+      "repository": "DorskFR/infra.dorsk.dev"
+    }
+  ],
+  "requireConfig": "optional",
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
+}

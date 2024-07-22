@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: security
+resources:
+  - cronjob.yaml
+  - serviceaccount.yaml
+configMapGenerator:
+  - files:
+      - files/config.json
+    name: renovate-files
+  - literals:
+      - TZ=Asia/Tokyo
+      - PUID=1000
+      - PGID=1000
+      - RENOVATE_BASE_DIR=/tmp/renovate/
+      - RENOVATE_CONFIG_FILE=/opt/renovate/config.json
+      - LOG_LEVEL=debug
+    name: renovate
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: renovate
+      app.kubernetes.io/name: renovate
+      app.kubernetes.io/part-of: renovate
